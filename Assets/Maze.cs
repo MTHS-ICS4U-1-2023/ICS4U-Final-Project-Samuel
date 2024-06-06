@@ -23,12 +23,14 @@ public class Maze : MonoBehaviour {
 		cellclusters = new CellCluster[sizeX, sizeZ];
 		
 		
-		// generate cells
+		// generate array of cellclusters
 		for (int x = 0; x < sizeX; x++) {
 			for (int z = 0; z < sizeZ; z++) {
 				CreateCell(x, z);
 			}
 		}
+
+		// define triangle cell neighbors
 		for (int x = 0; x < sizeX; x++) {
 			for (int z = 0; z < sizeZ; z++) {
 				for (int tri = 0; tri < 4; tri++) {
@@ -61,9 +63,10 @@ public class Maze : MonoBehaviour {
 							}
             			}
 					} catch (Exception) {
-
+						Debug.Log("border cell missed check");
 					}
-					// WIP
+
+					// shuffle neighbors to cause random walk
         			List<TriangleCellFloor> temp = new List<TriangleCellFloor>();
         			int j = cellclusters[x, z].transform.Find(""+triname).GetComponent<TriangleCellFloor>().neighbors.Count;
         			for (int i = 0; i < j; i++)
@@ -75,7 +78,8 @@ public class Maze : MonoBehaviour {
 				}
 			}
 		}
-		
+
+		// create upper and right border walls of maze
 		for(int i = 0; i < sizeX; i++){
 			SquareWalls wall = Instantiate(SquareWall) as SquareWalls;
 			wall.x = sizeX;
@@ -91,7 +95,7 @@ public class Maze : MonoBehaviour {
 			Destroy(wall.transform.Find("12").gameObject);
 		}
 		
-		// carve maze
+		// maze generation algorithm beginning
 		Stack<TriangleCellFloor> work = new Stack<TriangleCellFloor> ();
 		List<TriangleCellFloor> visited = new List<TriangleCellFloor> ();
 		List<TriangleCellFloor> reserved = new List<TriangleCellFloor> ();
@@ -101,8 +105,9 @@ public class Maze : MonoBehaviour {
 
 		work.Push (start);
 		visited.Add (start);
-		
-		// reserve cells
+
+		// WIP
+		// reserve cells for premade rooms
 		//for (int i = 0; i < sizeX - 1; i++)
         //{
 			for (int j = 0; j < 4; j++)
@@ -114,7 +119,7 @@ public class Maze : MonoBehaviour {
 			}
         //}
 
-		//generate maze
+		//generate maze path
 		while(work.Count > 0)
 		{
 			TriangleCellFloor current = work.Pop ();
@@ -138,6 +143,8 @@ public class Maze : MonoBehaviour {
 				}	
 			}
 		}
+
+		// carve maze by deleting walls
 		for (int x = 0; x < sizeX; x++)
 		{
 			for (int z = 0; z < sizeZ; z++)
@@ -159,8 +166,8 @@ public class Maze : MonoBehaviour {
 				}
 			}
 		}
-		
-		// test moving before generation??
+
+		// delete reserved cell components to replace with other prefabs
 		for (int x = 0; x < sizeX; x++)
 		{
 			for (int z = 0; z < sizeZ; z++)
@@ -175,11 +182,13 @@ public class Maze : MonoBehaviour {
 			}
 		}
 	}
-	
+
+	// destroy game object test
 	public void Deteriorate (ref Maze maze) {
 		Destroy(cellclusters[3, 3].gameObject);
 	}
 
+	// instantiate cellclusters as part of array generation
 	private void CreateCell (int x, int z) {
 		CellCluster newCell = Instantiate(cellPrefab) as CellCluster;
 		

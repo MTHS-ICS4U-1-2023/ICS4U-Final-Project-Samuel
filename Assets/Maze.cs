@@ -150,13 +150,11 @@ public class Maze : MonoBehaviour {
 					{
 						TriangleCellFloor neighbor2 = cellclusters[x, z].transform.Find("" + triname).GetComponent<TriangleCellFloor>().history.Last();
 						wallname = float.Parse(neighbor1.name) + float.Parse(neighbor2.name);
-						if (neighbor2.transform.parent.GetComponent<CellCluster>().x == x && neighbor2.transform.parent.GetComponent<CellCluster>().z == z) { //clean up later
-							Destroy(cellclusters[x, z].transform.Find("" + wallname).gameObject);
-						} else if (Mathf.Log(float.Parse(neighbor1.name), 2) % 2 != 0) {
-							Destroy(cellclusters[x, z].transform.Find("" + wallname).gameObject);
-						} else {
+						if (Mathf.Log(float.Parse(neighbor1.name), 2) % 2 == 0) { // current triangle is upper or righter, wall owned by neighboring cellcluster
 							Destroy(cellclusters[neighbor2.transform.parent.GetComponent<CellCluster>().x, neighbor2.transform.parent.GetComponent<CellCluster>().z].transform.Find("" + wallname).gameObject);
-						} //greater one holds walls
+						} else {
+							Destroy(cellclusters[x, z].transform.Find("" + wallname).gameObject);
+						}
 					}
 				}
 			}

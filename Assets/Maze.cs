@@ -81,14 +81,14 @@ public class Maze : MonoBehaviour {
 
 		// create upper and right border walls of maze
 		for(int i = 0; i < sizeX; i++){
-			SquareWalls wall = Instantiate(SquareWall) as SquareWalls;
+			SquareWalls wall = Instantiate(SquareWall, this.transform) as SquareWalls;
 			wall.x = sizeX;
 			wall.z = i;
 			wall.transform.localPosition = new Vector3(wall.x - sizeX * 0.5f + 0.5f, 0f, wall.z - sizeZ * 0.5f + 0.5f);
 			Destroy(wall.transform.Find("3").gameObject);
 		}
 		for(int i = 0; i < sizeZ; i++){
-			SquareWalls wall = Instantiate(SquareWall) as SquareWalls;
+			SquareWalls wall = Instantiate(SquareWall, this.transform) as SquareWalls;
 			wall.x = i;
 			wall.z = sizeZ;
 			wall.transform.localPosition = new Vector3(wall.x - sizeX * 0.5f + 0.5f, 0f, wall.z - sizeZ * 0.5f + 0.5f);

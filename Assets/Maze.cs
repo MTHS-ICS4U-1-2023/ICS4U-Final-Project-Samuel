@@ -67,28 +67,28 @@ public class Maze : MonoBehaviour {
 					}
 
 					// shuffle neighbors to cause random walk
-        			List<TriangleCellFloor> temp = new List<TriangleCellFloor>();
-        			int j = cellclusters[x, z].transform.Find(""+triname).GetComponent<TriangleCellFloor>().neighbors.Count;
-        			for (int i = 0; i < j; i++)
-        			{
-            			temp.Add(cellclusters[x, z].transform.Find(""+triname).GetComponent<TriangleCellFloor>().neighbors[UnityEngine.Random.Range(0, cellclusters[x, z].transform.Find(""+triname).GetComponent<TriangleCellFloor>().neighbors.Count)]);
-            			cellclusters[x, z].transform.Find(""+triname).GetComponent<TriangleCellFloor>().neighbors.Remove(temp.Last());
-        			}
-        			cellclusters[x, z].transform.Find(""+triname).GetComponent<TriangleCellFloor>().neighbors = temp;
+					int last = cellclusters[x, z].transform.Find("" + triname).GetComponent<TriangleCellFloor>().neighbors.Count - 1;
+					for (int i = 0; i < last; i++)
+					{
+						int r = UnityEngine.Random.Range(i, cellclusters[x, z].transform.Find("" + triname).GetComponent<TriangleCellFloor>().neighbors.Count);
+						TriangleCellFloor tmp = cellclusters[x, z].transform.Find("" + triname).GetComponent<TriangleCellFloor>().neighbors[i];
+						cellclusters[x, z].transform.Find("" + triname).GetComponent<TriangleCellFloor>().neighbors[i] = cellclusters[x, z].transform.Find("" + triname).GetComponent<TriangleCellFloor>().neighbors[r];
+						cellclusters[x, z].transform.Find("" + triname).GetComponent<TriangleCellFloor>().neighbors[r] = tmp;
+					}
 				}
 			}
 		}
 
 		// create upper and right border walls of maze
 		for(int i = 0; i < sizeX; i++){
-			SquareWalls wall = Instantiate(SquareWall) as SquareWalls;
+			SquareWalls wall = Instantiate(SquareWall, this.transform) as SquareWalls;
 			wall.x = sizeX;
 			wall.z = i;
 			wall.transform.localPosition = new Vector3(wall.x - sizeX * 0.5f + 0.5f, 0f, wall.z - sizeZ * 0.5f + 0.5f);
 			Destroy(wall.transform.Find("3").gameObject);
 		}
 		for(int i = 0; i < sizeZ; i++){
-			SquareWalls wall = Instantiate(SquareWall) as SquareWalls;
+			SquareWalls wall = Instantiate(SquareWall, this.transform) as SquareWalls;
 			wall.x = i;
 			wall.z = sizeZ;
 			wall.transform.localPosition = new Vector3(wall.x - sizeX * 0.5f + 0.5f, 0f, wall.z - sizeZ * 0.5f + 0.5f);
@@ -110,13 +110,13 @@ public class Maze : MonoBehaviour {
 		// reserve cells for premade rooms
 		//for (int i = 0; i < sizeX - 1; i++)
         //{
-			for (int j = 0; j < 4; j++)
-			{
-				reserved.Add (cellclusters[0, 7].transform.Find("" + Mathf.Pow(2, j)).GetComponent<TriangleCellFloor>());
-				reserved.Add (cellclusters[1, 7].transform.Find("" + Mathf.Pow(2, j)).GetComponent<TriangleCellFloor>());
-				reserved.Add (cellclusters[0, 8].transform.Find("" + Mathf.Pow(2, j)).GetComponent<TriangleCellFloor>());
-				reserved.Add (cellclusters[1, 8].transform.Find("" + Mathf.Pow(2, j)).GetComponent<TriangleCellFloor>());
-			}
+		//	for (int j = 0; j < 4; j++)
+		//	{
+		//		reserved.Add (cellclusters[0, 7].transform.Find("" + Mathf.Pow(2, j)).GetComponent<TriangleCellFloor>());
+		//		reserved.Add (cellclusters[1, 7].transform.Find("" + Mathf.Pow(2, j)).GetComponent<TriangleCellFloor>());
+		//		reserved.Add (cellclusters[0, 8].transform.Find("" + Mathf.Pow(2, j)).GetComponent<TriangleCellFloor>());
+		//		reserved.Add (cellclusters[1, 8].transform.Find("" + Mathf.Pow(2, j)).GetComponent<TriangleCellFloor>());
+		//	}
         //}
 
 		//generate maze path
@@ -190,7 +190,7 @@ public class Maze : MonoBehaviour {
 
 	// instantiate cellclusters as part of array generation
 	private void CreateCell (int x, int z) {
-		CellCluster newCell = Instantiate(cellPrefab) as CellCluster;
+		CellCluster newCell = Instantiate(cellPrefab, this.transform) as CellCluster;
 		
 		newCell.x = x;
 		newCell.z = z;

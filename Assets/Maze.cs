@@ -67,14 +67,14 @@ public class Maze : MonoBehaviour {
 					}
 
 					// shuffle neighbors to cause random walk
-        			List<TriangleCellFloor> temp = new List<TriangleCellFloor>();
-        			int j = cellclusters[x, z].transform.Find(""+triname).GetComponent<TriangleCellFloor>().neighbors.Count;
-        			for (int i = 0; i < j; i++)
-        			{
-            			temp.Add(cellclusters[x, z].transform.Find(""+triname).GetComponent<TriangleCellFloor>().neighbors[UnityEngine.Random.Range(0, cellclusters[x, z].transform.Find(""+triname).GetComponent<TriangleCellFloor>().neighbors.Count)]);
-            			cellclusters[x, z].transform.Find(""+triname).GetComponent<TriangleCellFloor>().neighbors.Remove(temp.Last());
-        			}
-        			cellclusters[x, z].transform.Find(""+triname).GetComponent<TriangleCellFloor>().neighbors = temp;
+					int last = cellclusters[x, z].transform.Find("" + triname).GetComponent<TriangleCellFloor>().neighbors.Count - 1;
+					for (int i = 0; i < last; i++)
+					{
+						int r = UnityEngine.Random.Range(i, cellclusters[x, z].transform.Find("" + triname).GetComponent<TriangleCellFloor>().neighbors.Count);
+						TriangleCellFloor tmp = cellclusters[x, z].transform.Find("" + triname).GetComponent<TriangleCellFloor>().neighbors[i];
+						cellclusters[x, z].transform.Find("" + triname).GetComponent<TriangleCellFloor>().neighbors[i] = cellclusters[x, z].transform.Find("" + triname).GetComponent<TriangleCellFloor>().neighbors[r];
+						cellclusters[x, z].transform.Find("" + triname).GetComponent<TriangleCellFloor>().neighbors[r] = tmp;
+					}
 				}
 			}
 		}

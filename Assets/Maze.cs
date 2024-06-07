@@ -110,13 +110,13 @@ public class Maze : MonoBehaviour {
 		// reserve cells for premade rooms
 		//for (int i = 0; i < sizeX - 1; i++)
         //{
-			for (int j = 0; j < 4; j++)
-			{
-				reserved.Add (cellclusters[0, 7].transform.Find("" + Mathf.Pow(2, j)).GetComponent<TriangleCellFloor>());
-				reserved.Add (cellclusters[1, 7].transform.Find("" + Mathf.Pow(2, j)).GetComponent<TriangleCellFloor>());
-				reserved.Add (cellclusters[0, 8].transform.Find("" + Mathf.Pow(2, j)).GetComponent<TriangleCellFloor>());
-				reserved.Add (cellclusters[1, 8].transform.Find("" + Mathf.Pow(2, j)).GetComponent<TriangleCellFloor>());
-			}
+		//	for (int j = 0; j < 4; j++)
+		//	{
+		//		reserved.Add (cellclusters[0, 7].transform.Find("" + Mathf.Pow(2, j)).GetComponent<TriangleCellFloor>());
+		//		reserved.Add (cellclusters[1, 7].transform.Find("" + Mathf.Pow(2, j)).GetComponent<TriangleCellFloor>());
+		//		reserved.Add (cellclusters[0, 8].transform.Find("" + Mathf.Pow(2, j)).GetComponent<TriangleCellFloor>());
+		//		reserved.Add (cellclusters[1, 8].transform.Find("" + Mathf.Pow(2, j)).GetComponent<TriangleCellFloor>());
+		//	}
         //}
 
 		//generate maze path
@@ -190,7 +190,7 @@ public class Maze : MonoBehaviour {
 
 	// instantiate cellclusters as part of array generation
 	private void CreateCell (int x, int z) {
-		CellCluster newCell = Instantiate(cellPrefab) as CellCluster;
+		CellCluster newCell = Instantiate(cellPrefab, this.transform) as CellCluster;
 		
 		newCell.x = x;
 		newCell.z = z;
